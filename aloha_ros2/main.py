@@ -1,11 +1,24 @@
 from interbotix_xs_modules.xs_robot.arm import InterbotixManipulatorXS
 from interbotix_xs_msgs.msg import JointSingleCommand
 from aloha_ros2.constants import MASTER2PUPPET_JOINT_FN, DT, START_ARM_POSE, MASTER_GRIPPER_JOINT_MID, PUPPET_GRIPPER_JOINT_CLOSE
+from aloha_ros2.robot_utils import torque_on, torque_off
 import time
 
 
-def prep_robots(master_bot, puppet_bot):
-    pass
+
+def prep_robots(master_bot: InterbotixManipulatorXS, puppet_bot: InterbotixManipulatorXS):
+    puppet_bot.core.robot_reboot_motors("single","gripper",True)
+    puppet_bot.core.robot_set_operating_modes("group", "arm", "position")
+    puppet_bot.core.robot_set_operating_modes("single", "gripper", "current_based_position")
+    master_bot.core.robot_set_operating_modes("group", "arm", "position")
+    master_bot.core.robot_set_operating_modes("single", "gripper", "position")
+
+    torque_on(puppet_bot)
+    torque_on(master_bot)
+
+    start_arm_qpos = START_ARM_POSE[:6]
+    
+    
 def press_to_start(master_bot):
     pass
 
@@ -15,6 +28,7 @@ def teleop():
 
     prep_robots(master_bot, puppet_bot)
     press_to_start(master_bot)
+
 
     ### Teleoperation loop
     gripper_command = JointSingleCommand(name='gripper')
