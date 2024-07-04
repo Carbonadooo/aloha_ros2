@@ -1,7 +1,7 @@
 from interbotix_xs_modules.xs_robot.arm import InterbotixManipulatorXS
 from interbotix_xs_msgs.msg import JointSingleCommand
 from aloha_ros2.constants import MASTER2PUPPET_JOINT_FN, DT, START_ARM_POSE, MASTER_GRIPPER_JOINT_MID, PUPPET_GRIPPER_JOINT_CLOSE
-from aloha_ros2.robot_utils import torque_on, torque_off
+from aloha_ros2.robot_utils import torque_on, torque_off, move_arms, move_grippers, get_arm_gripper_positions
 import time
 
 
@@ -17,14 +17,26 @@ def prep_robots(master_bot: InterbotixManipulatorXS, puppet_bot: InterbotixManip
     torque_on(master_bot)
 
     start_arm_qpos = START_ARM_POSE[:6]
+    move_arms([master_bot, puppet_bot], [start_arm_qpos]*2, move_time=1)
+    move_grippers([master_bot, puppet_bot], [MASTER_GRIPPER_JOINT_MID, PUPPET_GRIPPER_JOINT_CLOSE], move_time=0.5)
     
     
 def press_to_start(master_bot):
-    pass
+    master_bot.core.robot_torque_enable("single", "gripper", False)
+    print(f"Close the gripper to start")
+    close_threshold = -0.3
+    pressed = False
+    while not pressed:
+        gripper_pos = get_arm_gripper_positions(master_bot)
+        if gripper_pos < close_threshold:
+            pressed = True
+        time.sleep(DT/10)
+    torque_off(master_bot)
+    print(f"Started!")
 
 def teleop():
-    master_bot = InterbotixManipulatorXS(robot_model="wx250s", group_name="arm", gripper_name="gripper", robot_name='master')
-    puppet_bot = InterbotixManipulatorXS(robot_model="vx300s", group_name="arm", gripper_name="gripper", robot_name='puppet')
+    master_bot = InterbotixManipulatorXS(robot_model="wx250s", group_name="arm", gripper_name="gripper")
+    puppet_bot = InterbotixManipulatorXS(robot_model="vx300s", group_name="arm", gripper_name="gripper", node=master_bot.core.get_node())
 
     prep_robots(master_bot, puppet_bot)
     press_to_start(master_bot)
