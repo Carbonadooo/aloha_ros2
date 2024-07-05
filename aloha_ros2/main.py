@@ -1,4 +1,9 @@
 from interbotix_xs_modules.xs_robot.arm import InterbotixManipulatorXS
+from interbotix_common_modules.common_robot.robot import (
+    create_interbotix_global_node,
+    robot_shutdown,
+    robot_startup,
+)
 from interbotix_xs_msgs.msg import JointSingleCommand
 from aloha_ros2.constants import MASTER2PUPPET_JOINT_FN, DT, START_ARM_POSE, MASTER_GRIPPER_JOINT_MID, PUPPET_GRIPPER_JOINT_CLOSE
 from aloha_ros2.robot_utils import torque_on, torque_off, move_arms, move_grippers, get_arm_gripper_positions
@@ -35,8 +40,10 @@ def press_to_start(master_bot):
     print(f"Started!")
 
 def teleop():
-    master_bot = InterbotixManipulatorXS(robot_model="wx250s", group_name="arm", gripper_name="gripper")
-    puppet_bot = InterbotixManipulatorXS(robot_model="vx300s", group_name="arm", gripper_name="gripper", node=master_bot.core.get_node())
+    global_node = create_interbotix_global_node()
+    master_bot = InterbotixManipulatorXS(robot_model="wx250s", group_name="arm", gripper_name="gripper", node=global_node)
+    puppet_bot = InterbotixManipulatorXS(robot_model="vx300s", group_name="arm", gripper_name="gripper", node=global_node)
+    robot_startup(global_node)
 
     prep_robots(master_bot, puppet_bot)
     press_to_start(master_bot)
