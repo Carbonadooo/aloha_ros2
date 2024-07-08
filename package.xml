@@ -3,7 +3,7 @@
 <package format="3">
   <name>aloha_ros2</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>A package transplanting aloha to ros2</description>
   <maintainer email="1187437050@qq.com">intern</maintainer>
   <license>TODO: License declaration</license>
 
