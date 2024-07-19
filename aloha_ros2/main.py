@@ -29,7 +29,7 @@ def prep_robots(master_bot: InterbotixManipulatorXS, puppet_bot: InterbotixManip
 def press_to_start(master_bot):
     master_bot.core.robot_torque_enable("single", "gripper", False)
     print(f"Close the gripper to start")
-    close_threshold = -0.3
+    close_threshold = -0.29
     pressed = False
     while not pressed:
         gripper_pos = get_arm_gripper_positions(master_bot)
