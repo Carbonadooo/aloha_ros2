@@ -16,7 +16,7 @@ sleep 3
 
 open_terminal "ros2 service call /wx250s/gravity_compensation_enable std_srvs/srv/SetBool 'data: true' \
 && ros2 launch interbotix_xsarm_control xsarm_control.launch.py robot_model:=vx300s \
-mode_configs:='$FOLLOWER_ARM_MODES' use_rviz:=false"
+mode_configs:='$FOLLOWER_ARM_MODES' use_rviz:=true"
 
 sleep 2
 

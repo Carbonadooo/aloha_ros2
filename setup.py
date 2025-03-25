@@ -25,6 +25,7 @@ setup(
         'console_scripts': [
             'one_side_op = aloha_ros2.main:teleop',
             'mirror_control = aloha_ros2.mirror_control:main',
+            'mirror_control_send_socket = aloha_ros2.mirror_control_send_socket:main',
         ],
     },
 )
