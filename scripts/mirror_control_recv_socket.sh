@@ -14,6 +14,8 @@ open_terminal "ros2 run aloha_ros2 mirror_control_recv_socket_to_topic"
 
 open_terminal "ros2 run aloha_ros2 mirror_control_topic"
 
+open_terminal "ros2 launch realsense2_camera rs_launch.py enable_rgbd:=true enable_sync:=true align_depth.enable:=true enable_color:=true enable_depth:=true camera_namespace:=grasp_module camera_name:=D435i pointcloud.enable:=true "
+
 sleep 1
 
 open_terminal "ros2 run aloha_ros2 tf_publisher"
