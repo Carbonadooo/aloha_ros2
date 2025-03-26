@@ -26,6 +26,9 @@ setup(
             'one_side_op = aloha_ros2.main:teleop',
             'mirror_control = aloha_ros2.mirror_control:main',
             'mirror_control_send_socket = aloha_ros2.mirror_control_send_socket:main',
+            'mirror_control_recv_socket_to_topic = aloha_ros2.mirror_control_recv_socket_to_topic:main',
+            'mirror_control_topic = aloha_ros2.mirror_control_topic:main',
+            'tf_publisher = aloha_ros2.tf_publisher:main',
         ],
     },
 )

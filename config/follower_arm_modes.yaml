@@ -1,4 +1,5 @@
-port: /dev/ttyDXL_follower_arm
+# port: /dev/ttyDXL_follower_arm
+port: /dev/ttyDXL
 
 groups:
   arm:
