@@ -9,11 +9,15 @@ open_terminal() {
 }
 
 open_terminal "ros2 launch interbotix_xsarm_gravity_compensation interbotix_gravity_compensation.launch.py robot_model:=wx250s \
-mode_configs:='$LEADER_ARM_MODES' use_rviz:=false" 
+mode_configs:='$LEADER_ARM_MODES' use_rviz:=true" 
 
 sleep 3
 
-open_terminal "ros2 service call /wx250s/gravity_compensation_enable std_srvs/srv/SetBool 'data: true'"
+# Enable gravity compensation
+# open_terminal "ros2 service call /wx250s/gravity_compensation_enable std_srvs/srv/SetBool 'data: true'"
+
+# Torque off
+open_terminal "ros2 service call /wx250s/torque_enable interbotix_xs_msgs/srv/TorqueEnable '{cmd_type: 'group', name: 'arm'}'"
 
 sleep 2
 
