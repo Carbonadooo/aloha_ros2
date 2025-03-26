@@ -18,6 +18,7 @@ class JointStateSender(Node):
         # 初始化socket并连接到接收端
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect(('robot-helper', 8888))
+        self.get_logger().info("Connected to robot-helper")
 
     def listener_callback(self, msg: JointState):
         # 打包消息以便通过socket发送
